@@ -31,6 +31,7 @@ import { FullscreenTerminal } from '@/components/FullscreenTerminal';
 import { TaskDetailOverlay } from '@/components/TaskDetailOverlay';
 import { IdePanel } from '@/ide/IdePanel';
 import { useHoldOptionToTalk } from '@/freeflow/holdOption';
+import { loadCustomCharacters } from '@/scene/office/customCharacters';
 import brandLogo from '@brand/logo.png?url';
 
 // Injected at build time from package.json (see electron.vite.config.ts).
@@ -94,6 +95,9 @@ export function App() {
     window.addEventListener('cth:open-settings', onOpenSettings);
     return () => window.removeEventListener('cth:open-settings', onOpenSettings);
   }, []);
+
+  // User-made characters (registered with the scene before agents are drawn).
+  useEffect(() => { void loadCustomCharacters(); }, []);
 
   // Initial config load
   useEffect(() => {

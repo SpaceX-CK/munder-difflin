@@ -1,6 +1,8 @@
 import { contextBridge, ipcRenderer, webUtils, type IpcRendererEvent } from 'electron';
 import type { AgentProvider } from '../shared/agentProvider';
 import type { HireManifest } from '../shared/hire';
+import type { CustomCharacter } from '../shared/customCharacter';
+export type { CustomCharacter } from '../shared/customCharacter';
 export type { HireManifest } from '../shared/hire';
 import type { IntegrationRecord, IntegrationTemplate } from '../shared/integrations';
 export type { IntegrationRecord, IntegrationTemplate } from '../shared/integrations';
@@ -273,6 +275,10 @@ export interface HarnessConfig {
    *  'claude' / 'claude-opus-4-8'. Mirrors src/main/config.ts. */
   godProvider?: AgentProvider;
   godModel?: string;
+  /** Which character the GOD agent looks like: a shipped cast name or a user-made
+   *  `custom:<slug>` id. Unset = 'michael'. Falls back to 'michael' if the custom
+   *  character no longer exists. */
+  godCharacter?: string;
   /** Per-server consent for the default MCP bundle, keyed by catalog id. Mirrors
    *  src/main/config.ts. */
   mcpDefaults?: { [id: string]: { enabled: boolean } };
@@ -1423,7 +1429,27 @@ const api = {
     notes?: string;
     /** Preview the centered release page using the default drop template. */
     drop?: boolean;
-  }): Promise<{ ok: boolean; error?: string }> => ipcRenderer.invoke('update:simulate', opts)
+  }): Promise<{ ok: boolean; error?: string }> => ipcRenderer.invoke('update:simulate', opts),
+  // User-made characters. Main owns the files and validates everything; `generate`
+  // returns sanitized rect-only SVG (front + back) drawn by a hidden Claude session.
+  characters: {
+    list: (): Promise<CustomCharacter[]> => ipcRenderer.invoke('characters:list'),
+    save: (c: CustomCharacter): Promise<{ ok: boolean; error?: string }> => ipcRenderer.invoke('characters:save', c),
+    delete: (id: string): Promise<{ ok: boolean }> => ipcRenderer.invoke('characters:delete', id),
+    generate: (description: string): Promise<{ ok: boolean; front?: string; back?: string; error?: string }> =>
+      ipcRenderer.invoke('characters:generate', description),
+    /** Redraw a reference image (PNG/JPEG/GIF/WebP, <= 5 MB). `layout` is an optional Pixelate draft. */
+    generateFromImage: (req: {
+      bytes: Uint8Array;
+      hint?: string;
+      layout?: { rows: string[]; legend: { letter: string; hex: string }[] };
+    }): Promise<{ ok: boolean; front?: string; back?: string; error?: string }> =>
+      ipcRenderer.invoke('characters:generateFromImage', req),
+    export: (id: string): Promise<{ ok: boolean; canceled?: boolean; error?: string }> =>
+      ipcRenderer.invoke('characters:export', id),
+    import: (): Promise<{ ok: boolean; canceled?: boolean; character?: CustomCharacter; error?: string }> =>
+      ipcRenderer.invoke('characters:import')
+  }
 };
 
 contextBridge.exposeInMainWorld('cth', api);

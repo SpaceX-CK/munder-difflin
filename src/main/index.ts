@@ -27,6 +27,9 @@ import {
 import { linkWorktreeDeps, unlinkWorktreeDeps } from './worktreeDeps';
 import { HiveManager, type AgentMeta, type HiveMessage, type HiveTask } from './hive';
 import { HookServer } from './hooks';
+import { CharacterStore } from './characters';
+import { generateCharacterSvgs, generateFromImage, MAX_IMAGE_BYTES } from './characterGen';
+import { CHARACTER_FILE_MAX_BYTES } from '../shared/customCharacter';
 import { CircuitBreaker, type BreakerInput } from './breaker';
 import { CumulativeSampleGate, type UsageProvider } from './usage';
 import { MemoryManager } from './memory';
@@ -3094,6 +3097,76 @@ ipcMain.on('app:readClipboardSync', (evt) => {
 // settings at spawn (hive.ensureAgent theme option) — deliberately NOT via
 // `claude config set -g theme`, which would also restyle the user's own
 // Claude sessions outside the app.
+
+// ─── IPC: user-made characters ──────────────────────────────────────────────
+// Files live in <userData>/characters/ (CharacterStore validates every read and write).
+// The renderer never touches the filesystem: it sends a character, main validates and
+// stores it; export/import go through native dialogs; `generate` asks a hidden Claude
+// session for pixel-art SVG and returns only SANITIZED, rebuilt SVG (see characterGen).
+const characterStore = new CharacterStore(() => join(app.getPath('userData'), 'characters'));
+ipcMain.handle('characters:list', () => characterStore.list());
+ipcMain.handle('characters:save', (_evt, raw: unknown) => {
+  const res = characterStore.save(raw);
+  return res.ok ? { ok: true as const } : { ok: false as const, error: res.error };
+});
+ipcMain.handle('characters:delete', (_evt, id: unknown) =>
+  ({ ok: typeof id === 'string' && characterStore.remove(id) }));
+// Drawing runs in the harness home: a hidden session cannot answer Claude's "trust this
+// folder?" prompt, so it needs a directory the god agent already runs in (see characterGen).
+ipcMain.handle('characters:generate', async (_evt, description: unknown) => {
+  if (typeof description !== 'string') return { ok: false as const, error: 'description required' };
+  const cfg = readConfig();
+  return generateCharacterSvgs(description, { command: cfg.defaultCommand ?? 'claude', cwd: cfg.harnessHome ?? undefined });
+});
+// Redraw a reference image. The renderer sends raw bytes; main re-validates everything
+// (size, magic bytes, the optional Pixelate layout) and never uses a renderer-supplied name.
+ipcMain.handle('characters:generateFromImage', async (_evt, payload: unknown) => {
+  const p = (payload ?? {}) as { bytes?: unknown; hint?: unknown; layout?: unknown };
+  const raw = p.bytes;
+  let bytes: Uint8Array | null = null;
+  if (raw instanceof ArrayBuffer) bytes = new Uint8Array(raw);
+  else if (ArrayBuffer.isView(raw)) bytes = new Uint8Array(raw.buffer, raw.byteOffset, raw.byteLength);
+  if (!bytes) return { ok: false as const, error: 'image bytes required' };
+  if (bytes.length > MAX_IMAGE_BYTES) return { ok: false as const, error: 'That image is too large.' };
+  const cfg = readConfig();
+  return generateFromImage(
+    { bytes, hint: typeof p.hint === 'string' ? p.hint : undefined, layout: p.layout },
+    { command: cfg.defaultCommand ?? 'claude', cwd: cfg.harnessHome ?? undefined }
+  );
+});
+ipcMain.handle('characters:export', async (evt, id: unknown) => {
+  const text = typeof id === 'string' ? characterStore.exportText(id) : null;
+  if (!text) return { ok: false as const, error: 'unknown character' };
+  const win = BrowserWindow.fromWebContents(evt.sender);
+  const opts = {
+    title: 'Export character',
+    defaultPath: `${String(id).slice('custom:'.length)}.mdchar.json`,
+    filters: [{ name: 'Munder Difflin character', extensions: ['json'] }]
+  };
+  const res = win ? await dialog.showSaveDialog(win, opts) : await dialog.showSaveDialog(opts);
+  if (res.canceled || !res.filePath) return { ok: false as const, canceled: true as const };
+  try { writeFileSync(res.filePath, text); return { ok: true as const }; }
+  catch (e) { return { ok: false as const, error: e instanceof Error ? e.message : String(e) }; }
+});
+ipcMain.handle('characters:import', async (evt) => {
+  const win = BrowserWindow.fromWebContents(evt.sender);
+  const opts = {
+    title: 'Import character',
+    filters: [{ name: 'Munder Difflin character', extensions: ['json'] }],
+    properties: ['openFile' as const]
+  };
+  const res = win ? await dialog.showOpenDialog(win, opts) : await dialog.showOpenDialog(opts);
+  if (res.canceled || res.filePaths.length === 0) return { ok: false as const, canceled: true as const };
+  try {
+    const file = res.filePaths[0];
+    // Size-check before reading: a multi-GB file picked by mistake must not be slurped.
+    if (statSync(file).size > CHARACTER_FILE_MAX_BYTES) return { ok: false as const, error: 'file is too large to be a character' };
+    const imported = characterStore.importText(readFileSync(file, 'utf8'));
+    return imported.ok ? { ok: true as const, character: imported.value } : { ok: false as const, error: imported.error };
+  } catch (e) {
+    return { ok: false as const, error: e instanceof Error ? e.message : String(e) };
+  }
+});
 
 // ─── IPC: folder picker ─────────────────────────────────────────────────────
 ipcMain.handle('dialog:chooseFolder', async (evt) => {

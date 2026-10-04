@@ -1,12 +1,13 @@
 import { useEffect, useRef } from 'react';
-import { paintCastPortrait, type OfficeCharacterName } from '@/scene/office/cast';
+import { paintCastPortrait, type CharacterId } from '@/scene/office/cast';
 import { PORTRAIT_W, PORTRAIT_H } from '@/scene/office/portraitArt';
+import { useCustomCharacters } from '@/scene/office/customCharacters';
 
 const FRAME_W = PORTRAIT_W;
 const FRAME_H = PORTRAIT_H;
 
 export interface SpritePortraitProps {
-  character: OfficeCharacterName;
+  character: CharacterId;
   /** Pixels per source pixel. Whole numbers are exact; half-steps (1.5, 2.5)
    *  double every other row, which pixel art survives. The blit runs with
    *  smoothing off, so nothing here is ever interpolated. */
@@ -21,6 +22,8 @@ export function SpritePortrait({
   background = 'transparent'
 }: SpritePortraitProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  // Custom art is edited in place under a stable id, so repaint when it changes.
+  const rev = useCustomCharacters((s) => s.rev);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -36,7 +39,7 @@ export function SpritePortrait({
     }
     paintCastPortrait(ctx, character, scale).catch(() => { /* asset load race */ });
     return () => { cancelled = true; void cancelled; };
-  }, [character, scale, background]);
+  }, [character, scale, background, rev]);
 
   // A fractional scale can land on a fractional pixel count; the canvas
   // attributes are integers either way, so round once and use the same number

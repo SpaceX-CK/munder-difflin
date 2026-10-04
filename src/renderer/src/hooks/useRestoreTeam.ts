@@ -1,6 +1,7 @@
 import { useEffect, useSyncExternalStore } from 'react';
 import { useStore, type Agent } from '@/store/store';
 import { buildSpawnCommand, inferAgentProvider, tokenizeCommand, type HarnessConfig } from '@/store/config';
+import { supportsResume } from '@shared/agentProvider';
 import { roleForHiveSpawn } from '@shared/agentRole';
 
 /** "Restore team" — respawn every worker from the previous session.
@@ -151,6 +152,11 @@ export function useRestoreTeam(config?: HarnessConfig | null): RestoreTeamState 
           });
           if (res.ok) {
             restored++;
+            // A provider that CAN resume but did not means this agent lost its conversation
+            // (no recorded session id, or its transcript is gone). Main falls back to a fresh
+            // session silently, so say so on the card instead of looking restored.
+            const startedFresh = !res.resumed && supportsResume(provider);
+            if (startedFresh) console.warn(`[restore] ${a.id} (${provider}) started a fresh session: nothing recorded to resume`);
             return {
                 ...a,
                 provider,
@@ -158,7 +164,10 @@ export function useRestoreTeam(config?: HarnessConfig | null): RestoreTeamState 
                 archived: false,
                 status: 'idle',
                 // Surface the worktree fallback on the floor card; otherwise normal.
-                action: worktreeGone ? 'worktree gone — using base repo' : 'starting up',
+                action: worktreeGone
+                  ? 'worktree gone — using base repo'
+                  : res.resumed ? 'resumed previous session'
+                  : startedFresh ? 'started fresh — no saved session' : 'starting up',
                 // The worktree is no longer on disk — drop it so this agent is treated
                 // as a plain base-cwd agent going forward (a future restore won't keep
                 // re-probing a dead path).

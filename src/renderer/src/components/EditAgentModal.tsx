@@ -4,7 +4,8 @@ import { PixelButton } from './PixelButton';
 import { SpritePortrait } from './SpritePortrait';
 import { ProviderLogo } from './ProviderLogo';
 import { useStore, type Agent } from '@/store/store';
-import { OFFICE_CAST, type OfficeCharacterName } from '@/scene/office/cast';
+import { OFFICE_CAST, type CharacterId } from '@/scene/office/cast';
+import { CustomCharacterPicker } from './CustomCharacterPicker';
 import { type AccentColorName } from '@/design/tokens';
 import {
   type AgentProvider,
@@ -34,7 +35,7 @@ export function EditAgentModal({ agent, onClose }: EditAgentModalProps) {
   const [config, setConfig] = useState<HarnessConfig | null>(null);
 
   const [name, setName] = useState(agent.name);
-  const [character, setCharacter] = useState<OfficeCharacterName>(agent.character);
+  const [character, setCharacter] = useState<CharacterId>(agent.character);
   const [accent, setAccent] = useState<AccentColorName>(agent.accent);
   const [provider, setProvider] = useState<AgentProvider>(
     inferAgentProvider(agent.command, agent.provider)
@@ -77,6 +78,12 @@ export function EditAgentModal({ agent, onClose }: EditAgentModalProps) {
     const command = config
       ? buildSpawnCommand(config, model, provider)
       : agent.command;
+
+    // The god is rebuilt from config on every start (it is not restored from the roster),
+    // so its look has to live in config or it would revert to Michael after a restart.
+    if (agent.isGod && character !== agent.character) {
+      void window.cth.updateConfig({ godCharacter: character }).catch(() => { /* best-effort */ });
+    }
 
     updateAgent(agent.id, {
       name: trimmedName,
@@ -161,6 +168,13 @@ export function EditAgentModal({ agent, onClose }: EditAgentModalProps) {
                       </button>
                     );
                   })}
+                  <CustomCharacterPicker
+                    selected={character}
+                    accent={accent}
+                    tileWidth={52}
+                    portraitScale={1.5}
+                    onPick={(id, displayName) => { setCharacter(id); setName(displayName); }}
+                  />
                 </div>
               </Row>
 

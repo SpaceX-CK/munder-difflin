@@ -211,6 +211,10 @@ export interface HarnessConfig {
   /** The model GOD runs on. Unset falls back to the provider preset's
    *  `recommendedOrchestratorModel`, then MODEL_GOD. Default 'claude-opus-4-8'. */
   godModel?: string;
+  /** Which character the GOD agent looks like: a shipped cast name or a user-made
+   *  `custom:<slug>` id. Unset = 'michael'. Falls back to 'michael' if the custom
+   *  character no longer exists. */
+  godCharacter?: string;
   /** Per-server consent state for the default MCP bundle, keyed by catalog id.
    *  Seeded from MCP_CATALOG (safe-readonly ON, write/secret OFF); the user flips
    *  these in Settings. A server is wired into an agent only when enabled here. */

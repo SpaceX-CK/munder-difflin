@@ -391,9 +391,13 @@ export const AGENT_PROVIDER_PRESETS: AgentProviderPreset[] = [
     // every BYOK slug in the OpenCode model catalog stays one click away for
     // whoever has the key.
     recommendedOrchestratorModel: undefined,
-    // Capturing the TUI session id for resume is unverified; spawn fresh on respawn
-    // (protocol re-injected as the initial prompt), matching codex.
-    resumeFlag: undefined,
+    // Resume by id: `opencode --session <id>` (also `-s`). The id is captured by the bundled
+    // hive-bridge plugin (hive.ts OPENCODE_PLUGIN posts `session_id`, hooks.ts records it).
+    // Without this every app start opened a brand-new opencode session — the old ones sat
+    // untouched in opencode.db. By id, NOT `--continue`: "last session" collides when two
+    // agents share a repo or the user also runs opencode by hand there. The protocol is still
+    // re-injected as the initial prompt on a resumed session, same as codex.
+    resumeFlag: '--session',
     installCommand: 'npm install -g opencode-ai@latest', // trusted, hardcoded
     // Node-free installers, for the rung that runs when npm is absent AND no Node
     // installer could be resolved (offline / unsupported platform) — until now
@@ -601,6 +605,15 @@ export function normalizeAgentProvider(value: unknown): AgentProvider | undefine
 
 export function providerPreset(provider: AgentProvider): AgentProviderPreset {
   return AGENT_PROVIDER_PRESETS.find((p) => p.id === provider) ?? AGENT_PROVIDER_PRESETS[0];
+}
+
+/** True when a respawn of this provider CAN continue a prior session (Claude, or a preset with a
+ *  resume flag / subcommand). Used to tell "started fresh, as expected" from "lost its session". */
+export function supportsResume(provider: AgentProvider | undefined): boolean {
+  if (!provider) return false;
+  if (isClaudeProvider(provider)) return true;
+  const preset = providerPreset(provider);
+  return !!(preset.resumeFlag || preset.resumeSubcommand);
 }
 
 export function isClaudeProvider(provider: AgentProvider | undefined): boolean {

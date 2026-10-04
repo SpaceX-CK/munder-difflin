@@ -22,7 +22,8 @@ import { inboxNudgeText } from '../../../shared/hiveNudge';
 import { resolveGodName } from '../../../shared/godIdentity';
 import { acquireTerminal, resetTerminal, isTerminalAutomationSafe } from '@/components/terminalPool';
 import { canDeliverToAgent, deliverWithAcknowledgement, checkPrecondition } from './queueDelivery';
-import { OFFICE_CAST, DEFAULT_CHARACTER } from '@/scene/office/cast';
+import { OFFICE_CAST, DEFAULT_CHARACTER, type CharacterId } from '@/scene/office/cast';
+import { useCustomCharacters, loadCustomCharacters } from '@/scene/office/customCharacters';
 
 const GOD_ID = 'god';
 /** Accent palette for MAIN-spawned (voice-hired) agents — picked deterministically
@@ -395,6 +396,14 @@ export function useHive(config: HarnessConfig | null): void {
       // every respawn even though the registry still has it right.
       const reg = await window.cth.hiveRegistry().catch(() => null);
       const godName = resolveGodName(reg?.agents?.[GOD_ID]?.name);
+      // The god's look is configurable (Edit Agent → character). Custom characters load
+      // asynchronously, so wait for them before deciding; an unknown/deleted custom id
+      // falls back to Michael rather than breaking the card.
+      await loadCustomCharacters();
+      const godCharacter: CharacterId =
+        useCustomCharacters.getState().characters.some((c) => c.id === config.godCharacter)
+          ? (config.godCharacter as CharacterId)
+          : OFFICE_CAST.some((m) => m.name === config.godCharacter) ? (config.godCharacter as CharacterId) : 'michael';
 
       const godProvider = config.godProvider ?? 'claude';
       const godModel = config.godModel;
@@ -421,14 +430,16 @@ export function useHive(config: HarnessConfig | null): void {
       const god: Agent = {
         id: GOD_ID,
         name: godName,
-        character: 'michael',
+        character: godCharacter,
         accent: 'lemon',
         description: 'god — runs the floor, triages requests, escalates only critical calls to you',
         project: 'hive',
         tmuxTarget: '',
         cwd: config.harnessHome!,
         status: 'idle',
-        action: 'running the floor',
+        // A god that could not resume starts a brand-new conversation; say so, because main
+        // falls back silently and he otherwise looks like he is simply continuing.
+        action: res.resumed === true ? 'running the floor' : 'running the floor · new session',
         progress: 0,
         currentStation: 'desk',
         ptyId: GOD_PTY,
@@ -1018,8 +1029,11 @@ export function useHive(config: HarnessConfig | null): void {
       // express: an agent named something else that should still look like a
       // particular character. Unknown values fall through to the inference rather
       // than breaking the card.
-      const castMember = (q?: string) =>
-        q ? OFFICE_CAST.find((m) => m.name === q || m.displayName.toLowerCase() === q)?.name : undefined;
+      const castMember = (q?: string): CharacterId | undefined =>
+        q ? OFFICE_CAST.find((m) => m.name === q || m.displayName.toLowerCase() === q)?.name
+          // A user-made character, by its `custom:<slug>` id (ids are lowercase already).
+          ?? useCustomCharacters.getState().characters.find((c) => c.id === q)?.id
+        : undefined;
       const character =
         castMember(rec.character?.trim().toLowerCase()) ??
         castMember((rec.name || rec.id).toLowerCase()) ??

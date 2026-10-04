@@ -76,6 +76,10 @@ export interface HarnessConfig {
    *  'claude' / 'claude-opus-4-8'. Mirrors src/main/config.ts. */
   godProvider?: AgentProvider;
   godModel?: string;
+  /** Which character the GOD agent looks like: a shipped cast name or a user-made
+   *  `custom:<slug>` id. Unset = 'michael'. Falls back to 'michael' if the custom
+   *  character no longer exists. */
+  godCharacter?: string;
   /** Per-server consent for the default MCP bundle, keyed by catalog id (mirrors
    *  src/main/config.ts; seeded from MCP_CATALOG). */
   mcpDefaults?: { [id: string]: { enabled: boolean } };

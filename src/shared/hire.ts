@@ -181,7 +181,8 @@ export function validateHireManifest(raw: unknown): HireValidation {
   const name = capped(o.name, 40, 'name', errors, true);
   const description = capped(o.description, 200, 'description', errors);
   const goal = capped(o.goal, 4000, 'goal', errors);
-  const character = capped(o.character, 24, 'character', errors)?.toLowerCase();
+  // 31 = a shipped cast name (≤ 24) or a user-made `custom:<slug>` id (7 + ≤ 24).
+  const character = capped(o.character, 31, 'character', errors)?.toLowerCase();
   const accent = capped(o.accent, 24, 'accent', errors)?.toLowerCase();
   const model = capped(o.model, 80, 'model', errors);
   if (model !== undefined && !MODEL_RE.test(model)) {

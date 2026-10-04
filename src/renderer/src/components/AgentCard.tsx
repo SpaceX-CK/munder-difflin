@@ -7,12 +7,12 @@ import { SpritePortrait } from './SpritePortrait';
 import { RealtimeMichaelToggle } from './RealtimeMichaelToggle';
 import { CostHud } from '@/realtime/CostHud';
 import { AccentColorName } from '@/design/tokens';
-import { OfficeCharacterName } from '@/scene/office/cast';
+import type { CharacterId } from '@/scene/office/cast';
 import { AgentNameEditor } from './AgentNameEditor';
 
 export interface AgentCardProps {
   name: string;
-  character: OfficeCharacterName;
+  character: CharacterId;
   accent: AccentColorName;
   status: StatusKind;
   /** This agent's pty, if it has one. Only used to notice that the USER has

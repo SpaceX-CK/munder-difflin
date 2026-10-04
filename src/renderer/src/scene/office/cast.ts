@@ -14,6 +14,11 @@ export type OfficeCharacterName =
   | 'oscar' | 'stanley' | 'phyllis' | 'andy' | 'kelly' | 'ryan'
   | 'toby' | 'creed' | 'meredith';
 
+/** A user-made character, registered at runtime by id (see customCharacters.ts). */
+export type CustomCharacterId = `custom:${string}`;
+/** Anything a roster entry's `character` may hold: a shipped cast name or a custom id. */
+export type CharacterId = OfficeCharacterName | CustomCharacterId;
+
 export interface CastMember {
   name: OfficeCharacterName;
   displayName: string;
@@ -52,7 +57,12 @@ export function hexToNumber(hex: string): number {
 }
 
 // ─── scene frames ────────────────────────────────────────────────────────────
-const frameCache = new Map<OfficeCharacterName, Texture[][]>();
+const frameCache = new Map<string, Texture[][]>();
+
+/** Drop cached textures for a character whose art was edited or deleted. */
+export function invalidateCastFrames(name: string): void {
+  frameCache.delete(name);
+}
 
 function bufToTexture(buf: Uint8ClampedArray): Texture {
   const canvas = document.createElement('canvas');
@@ -73,7 +83,7 @@ function bufToTexture(buf: Uint8ClampedArray): Texture {
  * and a back view (up — agents seated facing their desk show their back). The
  * three walk frames are stand / step-left / step-right.
  */
-export async function getCastFrames(name: OfficeCharacterName): Promise<Texture[][]> {
+export async function getCastFrames(name: string): Promise<Texture[][]> {
   const cached = frameCache.get(name);
   if (cached) return cached;
   const { front, back } = sceneFrameBufs(name);
@@ -93,7 +103,7 @@ export async function getCastFrames(name: OfficeCharacterName): Promise<Texture[
  */
 export async function paintCastPortrait(
   ctx: CanvasRenderingContext2D,
-  name: OfficeCharacterName,
+  name: string,
   scale = 2,
 ): Promise<void> {
   paintPortrait(ctx, name, scale);

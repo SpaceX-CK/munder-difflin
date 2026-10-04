@@ -2,6 +2,7 @@ import * as pty from 'node-pty';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { resolveCommand, userShellPath } from './shellEnv';
+import { buildPtyEnv } from './ptyEnv';
 import { expandTilde } from './fs';
 import { projectDir } from './transcript';
 import { ensureKilled } from './procKill';
@@ -137,11 +138,12 @@ export function runHiddenClaude(prompt: string, opts: HiddenClaudeOptions): Prom
         cols: 220,
         rows: 50,
         cwd: opts.cwd,
-        env: {
-          ...process.env,
-          PATH: userShellPath(),
-          ...(opts.env ?? {}),
-        } as Record<string, string>,
+        // buildPtyEnv strips the parent Claude session's identity markers. Spreading raw
+        // process.env instead meant an app launched from inside a Claude session passed
+        // CLAUDE_CODE_CHILD_SESSION down, which makes this session NOT write its
+        // transcript — so the reply was on screen but extractLastAssistantText never
+        // found it ("no assistant response found in transcript").
+        env: buildPtyEnv(process.env, userShellPath(), opts.env),
       });
     } catch (e) {
       resolve({ ok: false, error: e instanceof Error ? e.message : String(e) });

@@ -13,6 +13,7 @@ import { hexToNumber, DEFAULT_CHARACTER } from './cast';
 import { pickSoloLine, pickExchange, type BreakSpot } from './cafeteriaLines';
 import { colors } from '@/design/tokens';
 import { loadTheme, resolveThemeMap, themeTilesetUrls } from './themeLoader';
+import { loadCustomCharacters } from './customCharacters';
 import {
   installContextLossRecovery, planInitFailure, DEFAULT_MAX_INIT_RETRIES
 } from './glRecovery';
@@ -1378,6 +1379,7 @@ export function OfficeFloor() {
       (app as any).__taskBoardPoll = taskBoardPoll;
 
       const addCharacter = async (agent: Agent) => {
+        await loadCustomCharacters();
         const charName = theme.cast.byName[agent.character] ? agent.character : theme.cast.defaultCharacter;
         const member = theme.cast.byName[charName];
         const seatIndex = claimSeat(agent);

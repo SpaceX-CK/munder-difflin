@@ -8,6 +8,10 @@
 // recolor in cast.ts; this module only powers the static portraits in the UI.
 
 import type { OfficeCharacterName } from './cast';
+import {
+  SKIN_TONES as SHARED_SKIN_TONES, HAIR_STYLES as SHARED_HAIR_STYLES, CLOTH_KINDS as SHARED_CLOTH_KINDS,
+  FACIAL_KINDS as SHARED_FACIAL_KINDS, BROW_KINDS as SHARED_BROW_KINDS, MOUTH_KINDS as SHARED_MOUTH_KINDS
+} from '@shared/customCharacter';
 
 export const PORTRAIT_W = 18;
 export const PORTRAIT_H = 28;
@@ -17,7 +21,7 @@ export const SCENE_H = 32;
 const OUTLINE: RGB = [38, 34, 46];
 const HX0 = 4, HX1 = 13; // head skin columns
 
-type RGB = [number, number, number];
+export type RGB = [number, number, number];
 type Buf = Uint8ClampedArray;
 
 // Current canvas dims — set per compose() so the same drawing primitives serve
@@ -464,7 +468,7 @@ function outlinePass(buf: Buf): void {
 }
 
 // ─── recipes ─────────────────────────────────────────────────────────────────
-interface Recipe {
+export interface Recipe {
   skin: string; hairc: RGB; hair: HairStyle; hairargs?: HairArgs;
   cloth: Cloth; c1: RGB; c2?: RGB; tie?: RGB; pants?: RGB;
   brow?: Brow; mouth?: Mouth; blush?: boolean; facial?: Facial; glasses?: boolean;
@@ -547,13 +551,57 @@ function composeScene(r: Recipe, phase: number, back: boolean): Buf {
 }
 
 // ─── public render ───────────────────────────────────────────────────────────
-const bufCache = new Map<OfficeCharacterName, Buf>();
-const sceneCache = new Map<OfficeCharacterName, SceneFrames>();
+const bufCache = new Map<string, Buf>();
+const sceneCache = new Map<string, SceneFrames>();
 
-function getBuf(name: OfficeCharacterName): Buf {
+// ─── user-made characters ────────────────────────────────────────────────────
+// A custom character is either a Recipe (drawn by the same composer as the cast)
+// or ready-made RGBA buffers (AI-generated pixel art). Registered by id
+// ('custom:<slug>'); the lookups below consult this before the shipped RECIPES.
+export interface CustomPixels { front: Buf; back: Buf; portrait: Buf; }
+export interface CustomArt { recipe?: Recipe; pixels?: CustomPixels; }
+const CUSTOM = new Map<string, CustomArt>();
+
+// Option lists live in shared/customCharacter.ts (main validates against them too).
+// These assignments fail to compile if a shared entry isn't something we can draw.
+const _hair: readonly HairStyle[] = SHARED_HAIR_STYLES;
+const _cloth: readonly Cloth[] = SHARED_CLOTH_KINDS;
+const _facial: readonly Facial[] = SHARED_FACIAL_KINDS;
+const _brow: readonly Brow[] = SHARED_BROW_KINDS;
+const _mouth: readonly Mouth[] = SHARED_MOUTH_KINDS;
+void [_hair, _cloth, _facial, _brow, _mouth];
+for (const tone of SHARED_SKIN_TONES) if (!SKIN[tone]) throw new Error(`customCharacter skin tone "${tone}" has no palette`);
+export {
+  SHARED_SKIN_TONES as SKIN_TONES, SHARED_HAIR_STYLES as HAIR_STYLES, SHARED_CLOTH_KINDS as CLOTH_KINDS,
+  SHARED_FACIAL_KINDS as FACIAL_KINDS, SHARED_BROW_KINDS as BROW_KINDS, SHARED_MOUTH_KINDS as MOUTH_KINDS
+};
+export type { HairStyle, Cloth, Facial, Brow, Mouth };
+
+export function isCustomId(id: string): boolean { return id.startsWith('custom:'); }
+export function hasCustomArt(id: string): boolean { return CUSTOM.has(id); }
+
+/** Register (or replace) a custom character and drop any cached frames for it. */
+export function registerCustomArt(id: string, art: CustomArt): void {
+  CUSTOM.set(id, art);
+  bufCache.delete(id);
+  sceneCache.delete(id);
+}
+
+export function unregisterCustomArt(id: string): void {
+  CUSTOM.delete(id);
+  bufCache.delete(id);
+  sceneCache.delete(id);
+}
+
+function recipeFor(name: string): Recipe {
+  return CUSTOM.get(name)?.recipe ?? (RECIPES as Record<string, Recipe>)[name] ?? RECIPES.jim;
+}
+
+function getBuf(name: string): Buf {
   let buf = bufCache.get(name);
   if (!buf) {
-    buf = compose(RECIPES[name] ?? RECIPES.jim);
+    const px = CUSTOM.get(name)?.pixels;
+    buf = px ? px.portrait : compose(recipeFor(name));
     bufCache.set(name, buf);
   }
   return buf;
@@ -561,11 +609,55 @@ function getBuf(name: OfficeCharacterName): Buf {
 
 export interface SceneFrames { front: Buf[]; back: Buf[]; }
 
+/** First row of the legs/feet region of an 18x32 sprite. Anything from here down animates. */
+const LEG_TOP = SCENE_H - 9;
+
+/**
+ * Walk frame for a one-pose sprite: copy of `src` with one HALF of the legs region
+ * (left or right of the centre line) lifted one pixel, so alternating frames read as
+ * stepping. Sprites are drawn symmetric around the vertical centre, so each half is
+ * one leg plus its side of the cape/coat.
+ */
+function stepBuf(src: Buf, lift: 'left' | 'right'): Buf {
+  const out = new Uint8ClampedArray(src);
+  const x0 = lift === 'left' ? 0 : SCENE_W / 2;
+  const x1 = lift === 'left' ? SCENE_W / 2 : SCENE_W;
+  for (let y = LEG_TOP; y < SCENE_H; y++) {
+    for (let x = x0; x < x1; x++) {
+      const o = (y * SCENE_W + x) * 4;
+      const below = ((y + 1) * SCENE_W + x) * 4;
+      for (let c = 0; c < 4; c++) out[o + c] = y + 1 < SCENE_H ? src[below + c] : 0;
+    }
+  }
+  return out;
+}
+
+/** Render a Recipe straight to buffers (editor live-preview; not cached or registered). */
+export function renderRecipe(r: Recipe): { portrait: Buf; scene: SceneFrames } {
+  return {
+    portrait: compose(r),
+    scene: {
+      front: [composeScene(r, 0, false), composeScene(r, 1, false), composeScene(r, 2, false)],
+      back: [composeScene(r, 0, true), composeScene(r, 1, true), composeScene(r, 2, true)],
+    },
+  };
+}
+
 /** Walk-phase frames (stand, step-L, step-R) for the in-scene sprite, front + back. */
-export function sceneFrameBufs(name: OfficeCharacterName): SceneFrames {
+export function sceneFrameBufs(name: string): SceneFrames {
   let frames = sceneCache.get(name);
   if (!frames) {
-    const r = RECIPES[name] ?? RECIPES.jim;
+    const px = CUSTOM.get(name)?.pixels;
+    if (px) {
+      // One pose per direction: the walk frames lift alternate legs (stand, left up, right up).
+      frames = {
+        front: [px.front, stepBuf(px.front, 'left'), stepBuf(px.front, 'right')],
+        back: [px.back, stepBuf(px.back, 'left'), stepBuf(px.back, 'right')],
+      };
+      sceneCache.set(name, frames);
+      return frames;
+    }
+    const r = recipeFor(name);
     frames = {
       front: [composeScene(r, 0, false), composeScene(r, 1, false), composeScene(r, 2, false)],
       back: [composeScene(r, 0, true), composeScene(r, 1, true), composeScene(r, 2, true)],
@@ -576,7 +668,7 @@ export function sceneFrameBufs(name: OfficeCharacterName): SceneFrames {
 }
 
 /** Paint a character's procedural portrait onto `ctx`, nearest-neighbor at `scale`. */
-export function paintPortrait(ctx: CanvasRenderingContext2D, name: OfficeCharacterName, scale = 2): void {
+export function paintPortrait(ctx: CanvasRenderingContext2D, name: string, scale = 2): void {
   const buf = getBuf(name);
   // Stage at 1× on an offscreen canvas, then blit scaled with smoothing off.
   const stage = document.createElement('canvas');

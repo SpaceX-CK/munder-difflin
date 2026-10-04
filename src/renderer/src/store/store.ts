@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { AccentColorName } from '@/design/tokens';
-import type { OfficeCharacterName } from '@/scene/office/cast';
+import type { CharacterId } from '@/scene/office/cast';
 import type { ThemeId } from '@/scene/office/themeRegistry';
 import type { StatusKind } from '@/components/PixelBadge';
 import type { AgentProvider } from '@shared/agentProvider';
@@ -42,7 +42,7 @@ export interface Agent {
   id: string;
   name: string;
   /** which Office character represents this agent on the floor */
-  character: OfficeCharacterName;
+  character: CharacterId;
   accent: AccentColorName;
   /** persistent job / hire one-liner — same string as hive registry `role`.
    *  Live status belongs on `status` / `action`, never here. */

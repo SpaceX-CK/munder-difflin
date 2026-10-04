@@ -3113,13 +3113,25 @@ module.exports.default = module.exports;
 // after + session.idle. The session.idle→Stop keeps status in step (→ idle) so the
 // renderer idle inbox-wake nudge delivers mail. ESM (OpenCode runs on Bun). Fully
 // wrapped. LIVE-UNVERIFIED (plugin auto-load + session.idle firing need BYOK keys).
+//
+// SESSION ID: every payload carries `session_id` (the opencode session id), which
+// hooks.ts hands to hive.recordSession so a respawn can `opencode --session <id>`
+// instead of silently opening a brand-new session on every app start. OpenCode runs
+// sub-agent tasks as CHILD sessions (they carry a parentID); only the MAIN session is
+// worth resuming and recordSession is last-writer-wins, so a child's id is never sent.
+// (SessionStart is deliberately NOT posted: hooks.ts gives it roster/goal side effects.)
 const OPENCODE_PLUGIN = `import { createConnection } from 'node:net';
 const SOCK = process.env.HIVE_SOCK;
 const AGENT = process.env.AGENT_ID || null;
-function post(payload) {
+const children = new Set();
+function note(info) {
+  try { if (info && typeof info.id === 'string' && info.parentID) children.add(info.id); } catch (e) {}
+}
+function post(payload, sessionID) {
   try {
     if (!SOCK) return;
     payload.agent_id = payload.agent_id || AGENT;
+    if (typeof sessionID === 'string' && sessionID && !children.has(sessionID)) payload.session_id = sessionID;
     const c = createConnection(SOCK, () => { try { c.end(JSON.stringify(payload) + '\\n'); } catch (e) {} });
     c.on('error', () => {});
   } catch (e) {}
@@ -3127,13 +3139,19 @@ function post(payload) {
 export const HiveBridge = async () => {
   return {
     event: async (input) => {
-      try { if (input && input.event && input.event.type === 'session.idle') post({ hook_event_name: 'Stop' }); } catch (e) {}
+      try {
+        const ev = input && input.event;
+        if (!ev) return;
+        const props = ev.properties || {};
+        if (ev.type === 'session.created' || ev.type === 'session.updated') note(props.info);
+        if (ev.type === 'session.idle') post({ hook_event_name: 'Stop' }, props.sessionID);
+      } catch (e) {}
     },
     'tool.execute.before': async (input) => {
-      try { post({ hook_event_name: 'PreToolUse', tool_name: input && (input.tool || input.name) }); } catch (e) {}
+      try { post({ hook_event_name: 'PreToolUse', tool_name: input && (input.tool || input.name) }, input && input.sessionID); } catch (e) {}
     },
     'tool.execute.after': async (input) => {
-      try { post({ hook_event_name: 'PostToolUse', tool_name: input && (input.tool || input.name) }); } catch (e) {}
+      try { post({ hook_event_name: 'PostToolUse', tool_name: input && (input.tool || input.name) }, input && input.sessionID); } catch (e) {}
     }
   };
 };
