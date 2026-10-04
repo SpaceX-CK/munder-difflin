@@ -35,3 +35,9 @@ docs/blog-preview-*/
 # Finder duplicate files, e.g. "spec 2.js", "sitemap 2.xml"
 *\ 2.*
 *\ [0-9].*
+
+# per-machine Claude Code state: local-only settings and the headroom proxy wrapper's
+# bookkeeping (pid/port markers rewritten on every `headroom wrap claude` run).
+# Only these files: .claude/skills/ is tracked on purpose.
+.claude/settings.local.json
+.claude/.headroom_wrap_*
