@@ -1,8 +1,9 @@
 ---
 title: "What Is ChatGPT Dots? OpenAI's Always On Agents Explained"
-seoTitle: "What Is ChatGPT Dots? Plans, Markets and Limits (Sep 2026)"
-description: "ChatGPT dots are OpenAI's always on agents, launched 29 Sep 2026. What a dot does, who can get one, what it costs and what it cannot do yet."
+seoTitle: "ChatGPT Dots: What They Do, Price and Who Can Get One"
+description: "A ChatGPT dot is an always on agent with its own cloud computer. Needs Pro (from $100 a month) or Business Premium, not Plus. Not on Pro in the UK or EU."
 date: 2026-09-30
+updated: 2026-10-03
 category: concepts
 categoryLabel: Concepts
 type: Non-technical
@@ -21,6 +22,7 @@ faq:
     a: "No. Dots are not included in Free, Go or Plus. You need Pro, Business Premium, or an Enterprise, Edu or Healthcare workspace where an admin has turned on the beta."
   - q: "Can a ChatGPT dot use my own computer?"
     a: "Only if you allow it. Local computer access is off by default, and you turn it on or revoke it in the ChatGPT desktop app on that computer. Without it, the dot works on its own cloud computer and browser."
+thumb: "/blog/assets/media/what-is-chatgpt-dots/lead-still.png"
 ---
 
 ChatGPT dots are always on agents that OpenAI launched on 29 September 2026 at DevDay. A dot runs on GPT-6 Astra, has its own cloud computer and browser, and takes on an ongoing responsibility rather than one task, so it keeps working between your conversations. At launch it comes with ChatGPT Pro and Business Premium.

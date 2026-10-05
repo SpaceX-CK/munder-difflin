@@ -4,9 +4,81 @@
   <subtitle>Guides, deep dives, and comparisons on running multi-agent Claude Code: orchestration, agent memory, automation, and the tooling landscape.</subtitle>
   <link href="https://munderdiffl.in/blog/feed.xml" rel="self" />
   <link href="https://munderdiffl.in/blog/" />
-  <updated>2026-09-30T00:00:00.000Z</updated>
+  <updated>2026-10-05T00:00:00.000Z</updated>
   <id>https://munderdiffl.in/blog/</id>
   <author><name>Chaitanya Giri</name><uri>https://munderdiffl.in</uri></author>
+  <entry>
+    <title>ASD-STE100 Prompting: Karpathy&#39;s 4 Tricks for Clearer AI Answers</title>
+    <link href="https://munderdiffl.in/blog/asd-ste100-prompting/" />
+    <id>https://munderdiffl.in/blog/asd-ste100-prompting/</id>
+    <published>2026-10-05T00:00:00.000Z</published>
+    <updated>2026-10-05T00:00:00.000Z</updated><category term="Guides" />
+    <summary>Ask your AI to answer in ASD-STE100, the aerospace manual standard, about 80% of the way. Plus Karpathy&#39;s three other tricks: diagrams, HTML and video.</summary>
+  </entry>
+  <entry>
+    <title>Agent Tools Today, 4 Oct 2026: You should Know, OpenClaw&#39;s Android Wait, Codex Wish List</title>
+    <link href="https://munderdiffl.in/blog/agent-tools-today-2026-10-04/" />
+    <id>https://munderdiffl.in/blog/agent-tools-today-2026-10-04/</id>
+    <published>2026-10-04T00:00:00.000Z</published>
+    <updated>2026-10-04T00:00:00.000Z</updated><category term="News" />
+    <summary>The top 5 launches, skills and plugins, multi agent moves, rising repos and arguments in coding agents on 4 Oct 2026, each with its source.</summary>
+  </entry>
+  <entry>
+    <title>Agent Tools Today, 3 Oct 2026: Claude Code Mods, OpenDots, Conductor Mobile</title>
+    <link href="https://munderdiffl.in/blog/agent-tools-today-2026-10-03/" />
+    <id>https://munderdiffl.in/blog/agent-tools-today-2026-10-03/</id>
+    <published>2026-10-03T00:00:00.000Z</published>
+    <updated>2026-10-03T00:00:00.000Z</updated><category term="News" />
+    <summary>The top 5 launches, skills and MCP servers, multi agent moves, rising repos and arguments in coding agents on 3 Oct 2026, each with its source.</summary>
+  </entry>
+  <entry>
+    <title>What Is Claude Cowork? Plans, Prices and How to Use It</title>
+    <link href="https://munderdiffl.in/blog/what-is-claude-cowork/" />
+    <id>https://munderdiffl.in/blog/what-is-claude-cowork/</id>
+    <published>2026-10-03T00:00:00.000Z</published>
+    <updated>2026-10-03T00:00:00.000Z</updated><category term="Concepts" />
+    <summary>Claude Cowork is Anthropic&#39;s agent for multi-step office work. Which plans include it, what it costs, where it runs and how to start, checked 3 Oct 2026.</summary>
+  </entry>
+  <entry>
+    <title>Gemini Spark: what it is, what it costs and who can get it</title>
+    <link href="https://munderdiffl.in/blog/what-is-gemini-spark/" />
+    <id>https://munderdiffl.in/blog/what-is-gemini-spark/</id>
+    <published>2026-10-03T00:00:00.000Z</published>
+    <updated>2026-10-03T00:00:00.000Z</updated><category term="Concepts" />
+    <summary>Gemini Spark is Google&#39;s personal AI agent in the Gemini app. Plans, US prices, countries, limits and how it compares with Grok Bot, checked 3 Oct 2026.</summary>
+  </entry>
+  <entry>
+    <title>Hermes Agent: what it is, how to install it and what it costs</title>
+    <link href="https://munderdiffl.in/blog/what-is-hermes-agent/" />
+    <id>https://munderdiffl.in/blog/what-is-hermes-agent/</id>
+    <published>2026-10-03T00:00:00.000Z</published>
+    <updated>2026-10-03T00:00:00.000Z</updated><category term="Concepts" />
+    <summary>Hermes Agent is Nous Research&#39;s MIT licensed AI agent with memory, skills and chat channels. Install command, models, pricing and how it compares.</summary>
+  </entry>
+  <entry>
+    <title>What Is Codex? OpenAI&#39;s Coding Agent in the CLI, App and Cloud</title>
+    <link href="https://munderdiffl.in/blog/what-is-codex/" />
+    <id>https://munderdiffl.in/blog/what-is-codex/</id>
+    <published>2026-10-02T00:00:00.000Z</published>
+    <updated>2026-10-02T00:00:00.000Z</updated><category term="Concepts" />
+    <summary>What is Codex? OpenAI&#39;s coding agent runs in your terminal, the ChatGPT desktop app, your IDE and the cloud. Which plans include it, checked 2 Oct 2026.</summary>
+  </entry>
+  <entry>
+    <title>What is Pi agent? The open source coding agent harness, explained</title>
+    <link href="https://munderdiffl.in/blog/what-is-pi-agent/" />
+    <id>https://munderdiffl.in/blog/what-is-pi-agent/</id>
+    <published>2026-10-02T00:00:00.000Z</published>
+    <updated>2026-10-02T00:00:00.000Z</updated><category term="Concepts" />
+    <summary>Pi agent is Earendil&#39;s MIT licensed coding agent harness. What it is, how to install it, what Pi 1.0 and Pi Durable add, and how it compares.</summary>
+  </entry>
+  <entry>
+    <title>Best Open Source AI Agents: 10 Picks by Job, Checked 1 Oct 2026</title>
+    <link href="https://munderdiffl.in/blog/open-source-ai-agents/" />
+    <id>https://munderdiffl.in/blog/open-source-ai-agents/</id>
+    <published>2026-10-01T00:00:00.000Z</published>
+    <updated>2026-10-01T00:00:00.000Z</updated><category term="Comparisons" />
+    <summary>The best open source AI agents in 2026, sorted by job: personal assistants, coding agents, agent teams and a framework. Licences checked 1 Oct 2026.</summary>
+  </entry>
   <entry>
     <title>ChatGPT Dots Alternatives: 7 Always On Agents, Local and Cloud</title>
     <link href="https://munderdiffl.in/blog/chatgpt-dots-alternatives/" />
@@ -28,8 +100,8 @@
     <link href="https://munderdiffl.in/blog/what-is-chatgpt-dots/" />
     <id>https://munderdiffl.in/blog/what-is-chatgpt-dots/</id>
     <published>2026-09-30T00:00:00.000Z</published>
-    <updated>2026-09-30T00:00:00.000Z</updated><category term="Concepts" />
-    <summary>ChatGPT dots are OpenAI&#39;s always on agents, launched 29 Sep 2026. What a dot does, who can get one, what it costs and what it cannot do yet.</summary>
+    <updated>2026-10-03T00:00:00.000Z</updated><category term="Concepts" />
+    <summary>A ChatGPT dot is an always on agent with its own cloud computer. Needs Pro (from $100 a month) or Business Premium, not Plus. Not on Pro in the UK or EU.</summary>
   </entry>
   <entry>
     <title>What Is OpenCode? Install, Pricing and How It Compares</title>
@@ -104,12 +176,12 @@
     <summary>Turn Claude Code into a personal AGI on your own computer: agents with memory, schedules, Gmail, Calendar, voice and Slack, set up in Munder Difflin 0.5.2.</summary>
   </entry>
   <entry>
-    <title>How to Install Gemini CLI, and Who Can Still Use It in 2026</title>
+    <title>How to Install Gemini CLI, and Can It Use Gemini 4 Yet?</title>
     <link href="https://munderdiffl.in/blog/how-to-install-gemini-cli/" />
     <id>https://munderdiffl.in/blog/how-to-install-gemini-cli/</id>
     <published>2026-09-15T00:00:00.000Z</published>
-    <updated>2026-09-15T00:00:00.000Z</updated><category term="Guides" />
-    <summary>Install Google&#39;s Gemini CLI with npm on Mac, Windows or Linux, why Homebrew is stuck on 0.46.0, and which sign in still works after 18 Jun 2026.</summary>
+    <updated>2026-10-02T00:00:00.000Z</updated><category term="Guides" />
+    <summary>Install Gemini CLI 0.62.0 with one npm command, see which sign ins still work after 18 Jun 2026, and why Gemini 4 Argon isn&#39;t in it yet.</summary>
   </entry>
   <entry>
     <title>Is Ollama Good for Coding? What Local Models Can and Can&#39;t Do</title>
@@ -414,77 +486,5 @@
     <published>2026-07-03T00:00:00.000Z</published>
     <updated>2026-09-10T00:00:00.000Z</updated><category term="Guides" />
     <summary>A guide to Munder Difflin&#39;s Command Center in 0.5.2: the kanban with task dependencies, the ask me tab, triggers, memory, live token use against each agent&#39;s budget, and when to watch the board instead of the floor.</summary>
-  </entry>
-  <entry>
-    <title>CrewAI and AutoGen vs a Local Agent Harness: Framework or App?</title>
-    <link href="https://munderdiffl.in/blog/crewai-autogen-vs-a-local-agent-harness/" />
-    <id>https://munderdiffl.in/blog/crewai-autogen-vs-a-local-agent-harness/</id>
-    <published>2026-07-03T00:00:00.000Z</published>
-    <updated>2026-07-03T00:00:00.000Z</updated><category term="Comparisons" />
-    <summary>CrewAI, AutoGen (now Microsoft Agent Framework), and LangGraph are frameworks — Python you write to build your own agent system. A multi-agent harness is an app you download that runs a team on your repos today. Here&#39;s how to tell which one you actually need.</summary>
-  </entry>
-  <entry>
-    <title>Claude Code vs GitHub Copilot: CLI, Editor and Pricing Compared</title>
-    <link href="https://munderdiffl.in/blog/github-copilot-cli-vs-claude-code-for-hive-work/" />
-    <id>https://munderdiffl.in/blog/github-copilot-cli-vs-claude-code-for-hive-work/</id>
-    <published>2026-07-03T00:00:00.000Z</published>
-    <updated>2026-09-29T00:00:00.000Z</updated><category term="Comparisons" />
-    <summary>Claude Code vs GitHub Copilot, checked 29 Sep 2026: Copilot CLI and the editor, AI Credits vs Claude plans, models, hooks, and when to pick each.</summary>
-  </entry>
-  <entry>
-    <title>How to Add a GitHub Copilot CLI Agent to Your Floor</title>
-    <link href="https://munderdiffl.in/blog/how-to-add-a-github-copilot-cli-agent/" />
-    <id>https://munderdiffl.in/blog/how-to-add-a-github-copilot-cli-agent/</id>
-    <published>2026-07-03T00:00:00.000Z</published>
-    <updated>2026-07-03T00:00:00.000Z</updated><category term="Guides" />
-    <summary>A step-by-step v0.3.3 walkthrough: install GitHub Copilot CLI (or let the harness install it for you), hire a Copilot worker, pick a model, and know exactly what print mode can and can&#39;t do.</summary>
-  </entry>
-  <entry>
-    <title>How to Hire From the Agent Gallery</title>
-    <link href="https://munderdiffl.in/blog/how-to-hire-from-the-agent-gallery/" />
-    <id>https://munderdiffl.in/blog/how-to-hire-from-the-agent-gallery/</id>
-    <published>2026-07-03T00:00:00.000Z</published>
-    <updated>2026-09-10T00:00:00.000Z</updated><category term="Guides" />
-    <summary>A practical guide to Munder Difflin&#39;s Agent Gallery: pick one of 80 ready made roles, download its manifest, import it with Add agent, review every field, customise identity, workspace, engine and briefing, then spawn it yourself.</summary>
-  </entry>
-  <entry>
-    <title>How to Brief Your Orchestrator (So the Floor Actually Ships)</title>
-    <link href="https://munderdiffl.in/blog/how-to-talk-to-your-orchestrator/" />
-    <id>https://munderdiffl.in/blog/how-to-talk-to-your-orchestrator/</id>
-    <published>2026-07-03T00:00:00.000Z</published>
-    <updated>2026-07-03T00:00:00.000Z</updated><category term="Guides" />
-    <summary>A practical guide to briefing Munder Difflin&#39;s GOD orchestrator: state the goal not the steps, set constraints and budgets, name the deliverable, and let Michael staff the floor. With bad-vs-good brief examples, mid-run steering, and Talk mode.</summary>
-  </entry>
-  <entry>
-    <title>How to Use the Built-in Monaco IDE</title>
-    <link href="https://munderdiffl.in/blog/how-to-use-the-built-in-monaco-ide/" />
-    <id>https://munderdiffl.in/blog/how-to-use-the-built-in-monaco-ide/</id>
-    <published>2026-07-03T00:00:00.000Z</published>
-    <updated>2026-07-03T00:00:00.000Z</updated><category term="Guides" />
-    <summary>A practical walkthrough of Munder Difflin v0.3.3&#39;s built-in Monaco IDE: the title-bar IDE button, the git CHANGES rail with side-by-side diffs vs HEAD, the file tree, tabs, Cmd/Ctrl+S save — and the agent review workflow it enables.</summary>
-  </entry>
-  <entry>
-    <title>Launching Munder Difflin v0.3.3: A Built-in Monaco IDE and GitHub Copilot CLI Support</title>
-    <link href="https://munderdiffl.in/blog/launching-munder-difflin-v0-3-3/" />
-    <id>https://munderdiffl.in/blog/launching-munder-difflin-v0-3-3/</id>
-    <published>2026-07-03T00:00:00.000Z</published>
-    <updated>2026-07-03T00:00:00.000Z</updated><category term="Story" />
-    <summary>Munder Difflin v0.3.3 adds a full Monaco IDE — file tree, editor tabs, save, and side-by-side git diffs of your agents&#39; changes — plus GitHub Copilot CLI as a first-class agent engine, our first community-contributed provider.</summary>
-  </entry>
-  <entry>
-    <title>Loop Engineering: Designing Agent Loops That Converge</title>
-    <link href="https://munderdiffl.in/blog/loop-engineering-for-ai-agents/" />
-    <id>https://munderdiffl.in/blog/loop-engineering-for-ai-agents/</id>
-    <published>2026-07-03T00:00:00.000Z</published>
-    <updated>2026-07-03T00:00:00.000Z</updated><category term="Concepts" />
-    <summary>Everyone engineers the prompt; almost nobody engineers the loop around it. Stop conditions, drain loops, retry with backoff, compaction cycles, breaker escalation, budgets, and human gates — the outer-loop mechanics that make an agent converge instead of run away.</summary>
-  </entry>
-  <entry>
-    <title>Orca vs Munder Difflin: Agent IDE or Agent Office?</title>
-    <link href="https://munderdiffl.in/blog/orca-vs-munder-difflin/" />
-    <id>https://munderdiffl.in/blog/orca-vs-munder-difflin/</id>
-    <published>2026-07-03T00:00:00.000Z</published>
-    <updated>2026-07-03T00:00:00.000Z</updated><category term="Comparisons" />
-    <summary>Orca is a YC-backed Agent IDE for driving coding agents side by side in isolated worktrees. Munder Difflin is an agent office that runs itself. An honest comparison of the two — and when each one is the right pick.</summary>
   </entry>
 </feed>

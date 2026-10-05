@@ -34,6 +34,7 @@
 .t-comparisons    { --c: #E8A33D; --c-soft: #FFEC99; }  /* typing amber / lemon-light */
 .t-use-cases      { --c: #9B7EDE; --c-soft: #D0BFF2; }  /* compacting purple */
 .t-story          { --c: #B5D589; --c-soft: #D4EAB0; }  /* grass tiles */
+.t-news           { --c: #7A8CA3; --c-soft: #D5DCE6; }  /* slate */
 .t-default        { --c: #B197FC; --c-soft: #D6C5FF; }
 
 * { box-sizing: border-box; }

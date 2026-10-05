@@ -3201,9 +3201,9 @@
     "category": "internals",
     "hero": {
       "file": "assets/media/the-spend-counter-that-went-back-to-zero/hero.png",
-      "alt": "Illustration: The Spend Counter That Went Back to Zero",
-      "prompt": "Hero image for a blog post titled \"The Spend Counter That Went Back to Zero\". The post is about: Our own floor was under reporting what it cost by 59 percent. The counter was cumulative since process start, the app restarts, and the session id stayed the same. Here is how a monotonic invariant let us recover the real number from an append-only log.",
-      "status": "placeholder"
+      "alt": "A yellow bean stands beside a desk where a spend meter's needle has swung back to zero, holding up a long paper log, while a whiteboard shows a sawtooth counter under a steadily climbing total.",
+      "prompt": "Drawn in code with blog/media-src/scene-lib.js by bob-mub2nu0z, 1 Oct 2026, house style: ink line art, yellow bean, no red, no text.",
+      "status": "ready"
     },
     "inline": {
       "note-1": {
@@ -4248,5 +4248,175 @@
       }
     },
     "youtube": []
+  },
+  "open-source-ai-agents": {
+    "title": "Best Open Source AI Agents: 10 Picks by Job, Checked 1 Oct 2026",
+    "category": "comparisons",
+    "hero": {
+      "file": "assets/media/open-source-ai-agents/hero.png",
+      "alt": "A yellow bean tinkers with a screwdriver at a workbench where four small robot agents each sit beside their own computer, under an open padlock and a pinned sheet of code.",
+      "prompt": "Drawn in code with blog/media-src/scene-lib.js by bob-mub2nu0z, 1 Oct 2026, house style: ink line art, yellow bean, no red, no text.",
+      "status": "ready"
+    }
+  },
+  "what-is-codex": {
+    "title": "What Is Codex? OpenAI's Coding Agent in the CLI, App and Cloud",
+    "category": "concepts",
+    "hero": {
+      "file": "assets/media/what-is-codex/hero.png",
+      "alt": "Hand drawn sketch: a yellow character lifts a card onto a stack of three cards, labelled CLI, app, cloud, and one agent, three places",
+      "prompt": "Hero image for a blog post titled \"What Is Codex? OpenAI's Coding Agent in the CLI, App and Cloud\". The post is about: What is Codex? OpenAI's coding agent runs in your terminal, the ChatGPT desktop app, your IDE and the cloud. Which plans include it, checked 2 Oct 2026.",
+      "status": "ready"
+    },
+    "inline": {
+      "note-1": {
+        "file": "assets/media/what-is-codex/note-1.png",
+        "alt": "Hand drawn sketch: a yellow character waves beside a stack of three cards",
+        "prompt": "",
+        "status": "ready"
+      },
+      "note-2": {
+        "file": "assets/media/what-is-codex/note-2.png",
+        "alt": "Hand drawn sketch: a yellow character points at a board on an easel",
+        "prompt": "",
+        "status": "ready"
+      }
+    },
+    "youtube": []
+  },
+  "what-is-pi-agent": {
+    "title": "What is Pi agent? The open source coding agent harness, explained",
+    "category": "concepts",
+    "hero": {
+      "file": "assets/media/what-is-pi-agent/hero.png",
+      "alt": "Hand drawn sketch: a yellow character at a desk points into a terminal window, labelled small core, your extensions, and pi 1.0, MIT",
+      "prompt": "Hero image for a blog post titled \"What is Pi agent? The open source coding agent harness, explained\". The post is about: Pi agent is Earendil's MIT licensed coding agent harness. What it is, how to install it, what Pi 1.0 and Pi Durable add, and how it compares.",
+      "status": "ready"
+    },
+    "inline": {
+      "note-1": {
+        "file": "assets/media/what-is-pi-agent/note-1.png",
+        "alt": "Hand drawn sketch: a yellow character at a desk points into a terminal window",
+        "prompt": "",
+        "status": "ready"
+      },
+      "note-2": {
+        "file": "assets/media/what-is-pi-agent/note-2.png",
+        "alt": "Hand drawn sketch: a yellow character sends a letter along an arrow to an empty box",
+        "prompt": "",
+        "status": "ready"
+      }
+    },
+    "youtube": []
+  },
+  "agent-tools-today-2026-10-03": {
+    "title": "Agent Tools Today, 3 Oct 2026: Claude Code Mods, OpenDots, Conductor Mobile",
+    "category": "news",
+    "hero": {
+      "file": "assets/media/agent-tools-today/hero.png",
+      "alt": "Hand drawn sketch: a front page with five numbered lines, a clock, and a yellow character reading it out",
+      "prompt": "Series hero for the Agent Tools Today daily brief, drawn in code (media-src/topic-tiles.html?t=news). Reused by every brief.",
+      "status": "ready"
+    },
+    "inline": {},
+    "youtube": []
+  },
+  "agent-tools-today-2026-10-04": {
+    "title": "Agent Tools Today, 4 Oct 2026: You should Know, OpenClaw's Android Wait, Codex Wish List",
+    "category": "news",
+    "hero": {
+      "file": "assets/media/agent-tools-today/hero.png",
+      "alt": "Hand drawn sketch: a front page with five numbered lines, a clock, and a yellow character reading it out",
+      "prompt": "Series hero for the Agent Tools Today daily brief, drawn in code (media-src/topic-tiles.html?t=news). Reused by every brief.",
+      "status": "ready"
+    },
+    "inline": {},
+    "youtube": []
+  },
+  "what-is-hermes-agent": {
+    "title": "Hermes Agent: what it is, how to install it and what it costs",
+    "category": "concepts",
+    "hero": {
+      "file": "assets/media/what-is-hermes-agent/hero.png",
+      "alt": "Hand drawn sketch: a yellow character asleep at a desk under a moon while two others keep working at terminals, labelled always on, remembers, and you sleep, it works",
+      "prompt": "Code drawn hero (media-src/spec.js, night archetype).",
+      "status": "ready"
+    },
+    "inline": {
+      "note-1": {
+        "file": "assets/media/what-is-hermes-agent/note-1.png",
+        "alt": "Hand drawn sketch: a yellow character asleep at a desk while a terminal window keeps running",
+        "prompt": "",
+        "status": "ready"
+      },
+      "note-2": {
+        "file": "assets/media/what-is-hermes-agent/note-2.png",
+        "alt": "Hand drawn sketch: a moon and a clock",
+        "prompt": "",
+        "status": "ready"
+      }
+    },
+    "youtube": []
+  },
+  "what-is-gemini-spark": {
+    "title": "Gemini Spark: what it is, what it costs and who can get it",
+    "category": "concepts",
+    "hero": {
+      "file": "assets/media/what-is-gemini-spark/hero.png",
+      "alt": "Hand drawn sketch: a yellow character pointing at a board with four lines on it, labelled works from your google apps, and an agent inside gemini",
+      "prompt": "Code drawn hero (media-src/spec.js, spotlight archetype).",
+      "status": "ready"
+    },
+    "inline": {
+      "note-1": {
+        "file": "assets/media/what-is-gemini-spark/note-1.png",
+        "alt": "Hand drawn sketch: a yellow character pointing at a board with a short list",
+        "prompt": "",
+        "status": "ready"
+      },
+      "note-2": {
+        "file": "assets/media/what-is-gemini-spark/note-2.png",
+        "alt": "Hand drawn sketch: two yellow characters talking, one waiting and one with an answer",
+        "prompt": "",
+        "status": "ready"
+      }
+    },
+    "youtube": []
+  },
+  "what-is-claude-cowork": {
+    "title": "What Is Claude Cowork? Plans, Prices and How to Use It",
+    "category": "concepts",
+    "hero": {
+      "file": "assets/media/what-is-claude-cowork/hero.png",
+      "alt": "Hand drawn sketch: a yellow character handing a card to a board with todo, doing and done columns, labelled hand over the whole task, and claude, beyond chat",
+      "prompt": "Code drawn hero (media-src/spec.js, kanban archetype).",
+      "status": "ready"
+    },
+    "inline": {
+      "note-1": {
+        "file": "assets/media/what-is-claude-cowork/note-1.png",
+        "alt": "Hand drawn sketch: a board with todo, doing and done columns and one finished card",
+        "prompt": "",
+        "status": "ready"
+      },
+      "note-2": {
+        "file": "assets/media/what-is-claude-cowork/note-2.png",
+        "alt": "Hand drawn sketch: a yellow character sending an envelope to a box",
+        "prompt": "",
+        "status": "ready"
+      }
+    },
+    "youtube": []
+  },
+  "asd-ste100-prompting": {
+    "title": "ASD-STE100 Prompting: Karpathy's 4 Tricks for Clearer AI Answers",
+    "category": "guides",
+    "hero": {
+      "file": "assets/media/asd-ste100-prompting/hero.png",
+      "alt": "Four cards on a dark panel under the words Four ways to ask for a clearer answer: 1 writing, 2 diagram, 3 web page, 4 video",
+      "prompt": "Code drawn motion still (assets/media/asd-ste100-prompting/motion.js, hero scene).",
+      "status": "ready"
+    },
+    "inline": {}
   }
 }

@@ -1396,6 +1396,7 @@ export function OfficeFloor() {
         }
         const character = new Character({
           agentId: agent.id,
+          displayName: agent.name,
           mapRenderer,
           frames,
           seatTile,
@@ -1582,7 +1583,10 @@ export function OfficeFloor() {
         for (const agent of agents) {
           const rt = runtimes.get(agent.id);
           if (!rt) void addCharacter(agent);
-          else applyState(agent, rt);
+          else {
+            rt.character.setName(agent.name);
+            applyState(agent, rt);
+          }
         }
       };
 

@@ -38,7 +38,7 @@ The source lives at [openai/codex on GitHub](https://github.com/openai/codex) un
 * **The Codex IDE extension** for VS Code, Cursor and Windsurf.
 * **Codex Web**, the cloud agent at chatgpt.com/codex, which works in the browser instead of on your machine.
 
-And one thing that isn't OpenAI's at all: the unscoped `codex` package on npm, an unrelated documentation generator.
+And one thing that isn't OpenAI's at all: the unscoped `codex` package on npm, an unrelated documentation generator. For how the four OpenAI products fit together, and which ChatGPT plans include each one, see [what is Codex](/blog/what-is-codex/).
 
 ## Which Codex CLI install method should I use?
 
