@@ -46,7 +46,7 @@ window.HireSpec = (function () {
     cap(raw.name, 40, 'name', true);
     cap(raw.description, 200, 'description');
     cap(raw.goal, 4000, 'goal');
-    cap(raw.character, 24, 'character');
+    cap(raw.character, 31, 'character'); // 31 = cast name (<=24) or a custom:<slug> id (7 + <=24); keep in lockstep with src/shared/hire.ts
     cap(raw.accent, 24, 'accent');
     cap(raw.model, 80, 'model');
     if (str(raw.model) && raw.model.trim() && !MODEL_RE.test(raw.model.trim())) {
